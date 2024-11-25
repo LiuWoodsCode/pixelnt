@@ -45,6 +45,17 @@ if((EXISTS "${REACTOS_SOURCE_DIR}/.git") AND (NOT NO_REACTOS_BUILDNO))
         endif()
 
         execute_process(
+            COMMAND "${GIT_EXECUTABLE}" rev-parse --abbrev-ref HEAD
+            WORKING_DIRECTORY ${REACTOS_SOURCE_DIR}
+            OUTPUT_VARIABLE GIT_BRANCH
+            RESULT_VARIABLE GIT_CALL_RESULT
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        if(GIT_CALL_RESULT EQUAL 0)
+            set(BRANCH "${GIT_BRANCH}")
+        endif()
+
+        execute_process(
             COMMAND "${GIT_EXECUTABLE}" describe --abbrev=7 --long --always
             WORKING_DIRECTORY ${REACTOS_SOURCE_DIR}
             OUTPUT_VARIABLE GIT_DESCRIBE_REVISION
