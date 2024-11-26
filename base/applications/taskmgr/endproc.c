@@ -12,13 +12,12 @@
 #define NTOS_MODE_USER
 #include <ndk/psfuncs.h>
 
-void
-ProcessPage_OnEndProcess(void)
+void ProcessPage_OnEndProcess(void)
 {
-    DWORD dwProcessId;
-    HANDLE hProcess;
-    WCHAR szTitle[256];
-    WCHAR strErrorText[260];
+    DWORD   dwProcessId;
+    HANDLE  hProcess;
+    WCHAR   szTitle[256];
+    WCHAR   strErrorText[260];
 
     dwProcessId = GetSelectedProcessId();
 
@@ -32,7 +31,7 @@ ProcessPage_OnEndProcess(void)
     {
         LoadStringW(hInst, IDS_MSG_UNABLETERMINATEPRO, szTitle, 256);
         LoadStringW(hInst, IDS_MSG_CLOSESYSTEMPROCESS, strErrorText, 256);
-        MessageBoxW(hMainWnd, strErrorText, szTitle, MB_OK | MB_ICONWARNING | MB_TOPMOST);
+        MessageBoxW(hMainWnd, strErrorText, szTitle, MB_OK|MB_ICONWARNING|MB_TOPMOST);
         CloseHandle(hProcess);
         return;
     }
@@ -40,10 +39,9 @@ ProcessPage_OnEndProcess(void)
     /* if this is a standard process just ask for confirmation before doing it */
     LoadStringW(hInst, IDS_MSG_WARNINGTERMINATING, strErrorText, 256);
     LoadStringW(hInst, IDS_MSG_TASKMGRWARNING, szTitle, 256);
-    if (!ConfirmMessageBox(hMainWnd, strErrorText, szTitle, MB_YESNO | MB_ICONWARNING | MB_TOPMOST))
+    if (!ConfirmMessageBox(hMainWnd, strErrorText, szTitle, MB_YESNO|MB_ICONWARNING|MB_TOPMOST))
     {
-        if (hProcess)
-            CloseHandle(hProcess);
+        if (hProcess) CloseHandle(hProcess);
         return;
     }
 
@@ -52,7 +50,7 @@ ProcessPage_OnEndProcess(void)
     {
         GetLastErrorText(strErrorText, 260);
         LoadStringW(hInst, IDS_MSG_UNABLETERMINATEPRO, szTitle, 256);
-        MessageBoxW(hMainWnd, strErrorText, szTitle, MB_OK | MB_ICONSTOP | MB_TOPMOST);
+        MessageBoxW(hMainWnd, strErrorText, szTitle, MB_OK|MB_ICONSTOP|MB_TOPMOST);
         return;
     }
 
@@ -61,14 +59,13 @@ ProcessPage_OnEndProcess(void)
     {
         GetLastErrorText(strErrorText, 260);
         LoadStringW(hInst, IDS_MSG_UNABLETERMINATEPRO, szTitle, 256);
-        MessageBoxW(hMainWnd, strErrorText, szTitle, MB_OK | MB_ICONSTOP | MB_TOPMOST);
+        MessageBoxW(hMainWnd, strErrorText, szTitle, MB_OK|MB_ICONSTOP|MB_TOPMOST);
     }
 
     CloseHandle(hProcess);
 }
 
-BOOL
-IsCriticalProcess(HANDLE hProcess)
+BOOL IsCriticalProcess(HANDLE hProcess)
 {
     NTSTATUS status;
     ULONG BreakOnTermination;
@@ -83,17 +80,19 @@ IsCriticalProcess(HANDLE hProcess)
        a critical process brings the system down when is terminated:
        <http://www.geoffchappell.com/studies/windows/win32/ntdll/api/rtl/peb/setprocessiscritical.htm> */
 
-    status = NtQueryInformationProcess(hProcess, ProcessBreakOnTermination, &BreakOnTermination, sizeof(ULONG), NULL);
+    status = NtQueryInformationProcess(hProcess,
+                                       ProcessBreakOnTermination,
+                                       &BreakOnTermination,
+                                       sizeof(ULONG),
+                                       NULL);
 
     if (NT_SUCCESS(status) && BreakOnTermination)
-    /* The last method of disabling this failed, so just force it to false*/
-        return False;
+        return TRUE;
 
     return FALSE;
 }
 
-BOOL
-ShutdownProcessTreeHelper(HANDLE hSnapshot, HANDLE hParentProcess, DWORD dwParentPID)
+BOOL ShutdownProcessTreeHelper(HANDLE hSnapshot, HANDLE hParentProcess, DWORD dwParentPID)
 {
     HANDLE hChildHandle;
     PROCESSENTRY32W ProcessEntry = {0};
@@ -105,8 +104,9 @@ ShutdownProcessTreeHelper(HANDLE hSnapshot, HANDLE hParentProcess, DWORD dwParen
         {
             if (ProcessEntry.th32ParentProcessID == dwParentPID)
             {
-                hChildHandle =
-                    OpenProcess(PROCESS_TERMINATE | PROCESS_QUERY_INFORMATION, FALSE, ProcessEntry.th32ProcessID);
+                hChildHandle = OpenProcess(PROCESS_TERMINATE | PROCESS_QUERY_INFORMATION,
+                                           FALSE,
+                                           ProcessEntry.th32ProcessID);
                 if (!hChildHandle || IsCriticalProcess(hChildHandle))
                 {
                     if (hChildHandle)
@@ -128,8 +128,7 @@ ShutdownProcessTreeHelper(HANDLE hSnapshot, HANDLE hParentProcess, DWORD dwParen
     return TerminateProcess(hParentProcess, 0);
 }
 
-BOOL
-ShutdownProcessTree(HANDLE hParentProcess, DWORD dwParentPID)
+BOOL ShutdownProcessTree(HANDLE hParentProcess, DWORD dwParentPID)
 {
     HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
     BOOL bResult;
@@ -144,13 +143,12 @@ ShutdownProcessTree(HANDLE hParentProcess, DWORD dwParentPID)
     return bResult;
 }
 
-void
-ProcessPage_OnEndProcessTree(void)
+void ProcessPage_OnEndProcessTree(void)
 {
-    DWORD dwProcessId;
-    HANDLE hProcess;
-    WCHAR szTitle[256];
-    WCHAR strErrorText[260];
+    DWORD   dwProcessId;
+    HANDLE  hProcess;
+    WCHAR   szTitle[256];
+    WCHAR   strErrorText[260];
 
     dwProcessId = GetSelectedProcessId();
 
@@ -164,17 +162,16 @@ ProcessPage_OnEndProcessTree(void)
     {
         LoadStringW(hInst, IDS_MSG_UNABLETERMINATEPRO, szTitle, 256);
         LoadStringW(hInst, IDS_MSG_CLOSESYSTEMPROCESS, strErrorText, 256);
-        MessageBoxW(hMainWnd, strErrorText, szTitle, MB_OK | MB_ICONWARNING | MB_TOPMOST);
+        MessageBoxW(hMainWnd, strErrorText, szTitle, MB_OK|MB_ICONWARNING|MB_TOPMOST);
         CloseHandle(hProcess);
         return;
     }
 
     LoadStringW(hInst, IDS_MSG_WARNINGTERMINATING, strErrorText, 256);
     LoadStringW(hInst, IDS_MSG_TASKMGRWARNING, szTitle, 256);
-    if (!ConfirmMessageBox(hMainWnd, strErrorText, szTitle, MB_YESNO | MB_ICONWARNING))
+    if (!ConfirmMessageBox(hMainWnd, strErrorText, szTitle, MB_YESNO|MB_ICONWARNING))
     {
-        if (hProcess)
-            CloseHandle(hProcess);
+        if (hProcess) CloseHandle(hProcess);
         return;
     }
 
@@ -182,7 +179,7 @@ ProcessPage_OnEndProcessTree(void)
     {
         GetLastErrorText(strErrorText, 260);
         LoadStringW(hInst, IDS_MSG_UNABLETERMINATEPRO, szTitle, 256);
-        MessageBoxW(hMainWnd, strErrorText, szTitle, MB_OK | MB_ICONSTOP);
+        MessageBoxW(hMainWnd, strErrorText, szTitle, MB_OK|MB_ICONSTOP);
         return;
     }
 
@@ -190,7 +187,7 @@ ProcessPage_OnEndProcessTree(void)
     {
         GetLastErrorText(strErrorText, 260);
         LoadStringW(hInst, IDS_MSG_UNABLETERMINATEPRO, szTitle, 256);
-        MessageBoxW(hMainWnd, strErrorText, szTitle, MB_OK | MB_ICONSTOP);
+        MessageBoxW(hMainWnd, strErrorText, szTitle, MB_OK|MB_ICONSTOP);
     }
 
     CloseHandle(hProcess);
