@@ -3,4 +3,4 @@
 127.0.0.1 localhost
 
 # You can also block websites this way.
-0.0.0.0 https://juststopoil.org
+0.0.0.0 juststopoil.org
