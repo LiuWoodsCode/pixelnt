@@ -73,22 +73,8 @@ BOOL IsCriticalProcess(HANDLE hProcess)
     /* return early if the process handle does not exist */
     if (!hProcess)
         return FALSE;
-
-    /* the important system processes that we don't want to let the user
-       kill come marked as critical, this simplifies the check greatly.
-
-       a critical process brings the system down when is terminated:
-       <http://www.geoffchappell.com/studies/windows/win32/ntdll/api/rtl/peb/setprocessiscritical.htm> */
-
-    status = NtQueryInformationProcess(hProcess,
-                                       ProcessBreakOnTermination,
-                                       &BreakOnTermination,
-                                       sizeof(ULONG),
-                                       NULL);
-
-    if (NT_SUCCESS(status) && BreakOnTermination)
-        return TRUE;
-
+    /* Re-enable the ability to terminate critical processes.
+    This is the default behavior for modern (Windows >=8) versions of Windows. */
     return FALSE;
 }
 
