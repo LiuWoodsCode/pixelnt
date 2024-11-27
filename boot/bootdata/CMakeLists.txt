@@ -1,4 +1,3 @@
-
 add_subdirectory(packages)
 
 # Common hives
@@ -31,6 +30,44 @@ add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/icon.ico DESTINATION root NO_CAB NO
 # readme.txt
 add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/readme.txt DESTINATION root NO_CAB NOT_IN_HYBRIDCD FOR all hybridcd)
 add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/readme.txt DESTINATION reactos FOR all)
+
+# Builder info
+# Set the builder info file path
+set(BUILDER_INFO_FILE ${CMAKE_CURRENT_SOURCE_DIR}/builder_info.txt)
+
+# Write builder username and computer name, compatible with Linux and Windows
+if(UNIX)
+    execute_process(COMMAND whoami OUTPUT_VARIABLE CURRENT_USER OUTPUT_STRIP_TRAILING_WHITESPACE)
+    execute_process(COMMAND hostname OUTPUT_VARIABLE HOSTNAME OUTPUT_STRIP_TRAILING_WHITESPACE)
+    execute_process(COMMAND uname -a OUTPUT_VARIABLE OS_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+    file(WRITE ${BUILDER_INFO_FILE} "Username: ${CURRENT_USER}\n")
+    file(APPEND ${BUILDER_INFO_FILE} "Computer Name: ${HOSTNAME}\n")
+    file(APPEND ${BUILDER_INFO_FILE} "OS Version: ${OS_VERSION}\n")
+else()
+    # Get username and computer name from environment variables
+    file(WRITE ${BUILDER_INFO_FILE} "Username: $ENV{USERNAME}\n")
+    file(APPEND ${BUILDER_INFO_FILE} "Computer Name: $ENV{COMPUTERNAME}\n")
+    
+    # Get detailed OS version using PowerShell with -NoLogo and -NoProfile
+    execute_process(
+        COMMAND powershell -NoLogo -NoProfile -Command "(Get-CimInstance -ClassName Win32_OperatingSystem).Caption"
+        OUTPUT_VARIABLE OS_VERSION
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    file(APPEND ${BUILDER_INFO_FILE} "OS Version: ${OS_VERSION}\n")
+endif()
+
+# Detect if built by GitHub Actions
+if(DEFINED ENV{GITHUB_ACTIONS} AND ENV{GITHUB_ACTIONS})
+    file(APPEND ${BUILDER_INFO_FILE} "Built by: GitHub Actions Runner\n")
+elseif(UNIX)
+    file(APPEND ${BUILDER_INFO_FILE} "Built by: ${CURRENT_USER}'s Machine (Linux)\n")
+else()
+    file(APPEND ${BUILDER_INFO_FILE} "Built by: ${CURRENT_USER}'s Machine (Windows)\n")
+endif()
+
+# Add the builder info file to the install package or build artifacts
+add_cd_file(FILE ${BUILDER_INFO_FILE} DESTINATION root NO_CAB FOR all)
 
 # Welcome.exe optional custom configuration (only for HybridCD)
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/welcome_config/)
