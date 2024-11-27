@@ -919,8 +919,9 @@ HRESULT WINAPI CRecycleBin::GetCommandString(UINT_PTR idCommand, UINT uFlags, UI
 
 HRESULT WINAPI CRecycleBin::AddPages(LPFNSVADDPROPSHEETPAGE pfnAddPage, LPARAM lParam)
 {
-    extern HRESULT RecycleBin_AddPropSheetPages(LPFNSVADDPROPSHEETPAGE pfnAddPage, LPARAM lParam);
-    return RecycleBin_AddPropSheetPages(pfnAddPage, lParam);
+    FIXME("%p %p %lu\n", this, pfnAddPage, lParam);
+
+    return E_NOTIMPL;
 }
 
 HRESULT WINAPI CRecycleBin::ReplacePage(EXPPS uPageID, LPFNSVADDPROPSHEETPAGE pfnReplaceWith, LPARAM lParam)
