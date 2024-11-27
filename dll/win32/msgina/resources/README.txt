@@ -13,3 +13,9 @@ svg/sleep_hibernate.svg
 svg/reboot.svg
 
 These files are in the public domain.
+
+The following bitmaps were made by Pixel Prowler (68132166+LiuWoodsCode@users.noreply.github.com):
+reactos.bmp
+line.bmp
+
+These files are licensed under CC BY-NC-SA 4.0.
