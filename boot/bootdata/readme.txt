@@ -1,4 +1,6 @@
-﻿========================
+﻿Note from Pixel Prowler (LiuWoodsCode): This file needs to be updated for LiuNT.
+
+========================
 ReactOS™ Version 0.4.x
 Updated October 9, 2021
 ========================
