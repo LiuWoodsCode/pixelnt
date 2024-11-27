@@ -163,7 +163,7 @@ LoadOrderGroup = Boot Bus Extender
 
 [Strings]
 ; Non-localizable
-ReactOS = "ReactOS Project"
+ReactOS = "PixelNT Project"
 
 IntelMfg = "Intel"
 NecMfg = "NEC"

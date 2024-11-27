@@ -2868,7 +2868,7 @@ InstallDirectoryPage(PINPUT_RECORD Ir)
     else if (USetupData.InstallationDirectory[0])
         wcscpy(InstallDir, USetupData.InstallationDirectory);
     else
-        wcscpy(InstallDir, L"\\ReactOS");
+        wcscpy(InstallDir, L"\\PixelNT");
 
     /*
      * Check the validity of the predefined 'InstallDir'. If we are either

@@ -9,7 +9,7 @@ FONT 8, "MS Shell Dlg"
 BEGIN
     LTEXT "Welcome to the PixelNT Setup Wizard", IDC_STARTTITLE, 115, 8, 195, 24
     LTEXT "You cannot install PixelNT directly from this CD yet! Please restart your computer from this CD in order to install PixelNT.", IDC_STATIC, 115, 40, 195, 100
-    LTEXT "Click Finish to exit the Setup.", IDC_STATIC, 115, 169, 195, 17
+    LTEXT "Click Finish to exit the Setup. Or click Next, for some reason this works.", IDC_STATIC, 115, 169, 195, 17
 END
 
 IDD_TYPEPAGE DIALOGEX 0, 0, 317, 143
