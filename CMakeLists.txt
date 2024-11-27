@@ -324,8 +324,7 @@ Enable this if the module uses typeid or dynamic_cast. You will probably need to
         sdk/include/ddk
         sdk/include/ndk
         sdk/include/reactos
-        sdk/include/reactos/libs
-        sdk/lib/pseh/include)
+        sdk/include/reactos/libs)
 
     if(ARCH STREQUAL "arm")
         include_directories(${REACTOS_SOURCE_DIR}/sdk/include/reactos/arm)
@@ -342,7 +341,7 @@ Enable this if the module uses typeid or dynamic_cast. You will probably need to
     add_subdirectory(sdk/include/asm)
 
     if(ARCH MATCHES "64$")
-        include(sdk/cmake/baseaddress64.cmake)
+        include(sdk/cmake/baseaddress64.cmake)  
     elseif(NO_ROSSYM)
         include(sdk/cmake/baseaddress_dwarf.cmake)
     elseif(MSVC)

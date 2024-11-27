@@ -23,6 +23,9 @@
 #define leave   _SEH2_LEAVE
 #define endtry  _SEH2_END
 #define abnormal_termination _abnormal_termination
+#define GetExceptionInformation() _SEH2_GetExceptionInformation()
+#define GetExceptionCode() _SEH2_GetExceptionCode()
+#define AbnormalTermination() _SEH2_AbnormalTermination()
 #define gcc_volatile volatile
 
 #endif
