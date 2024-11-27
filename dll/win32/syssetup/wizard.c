@@ -1052,7 +1052,7 @@ GenerateComputerName(LPWSTR lpBuffer)
     static const unsigned cChars = sizeof(Chars) / sizeof(WCHAR) - 1;
     unsigned i;
 
-    wcscpy(lpBuffer, L"REACTOS-");
+    wcscpy(lpBuffer, L"PIXELNT-");
 
     srand(GetTickCount());
 
