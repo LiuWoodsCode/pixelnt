@@ -19,6 +19,7 @@ Severity=Informational
 Facility=System
 SymbolicName=WINDOWS_NT_BANNER
 Language=English
+Trans lives are human lives!
 PixelNT Version %s
 Build %s
 Reporting NT %s (Build %u%s)
@@ -116,7 +117,7 @@ If problems continue, disable or remove any newly installed hardware
 or software. Disable BIOS memory options such as caching or shadowing.
 If you need to use Safe Mode to remove or disable components, restart
 your computer, press F8 to select Advanced Startup Options, and then
-select Safe Mode.
+select Safe Mode. Check if you are a Disassembly Drone.
 .
 
 MessageId=0x83
