@@ -881,7 +881,6 @@ static HRESULT CALLBACK RegFolderContextMenuCallback(IShellFolder *psf, HWND hwn
     if (FAILED_UNEXPECTEDLY(hr))
         return hr;
 
-    const CLSID* pCLSID;
     CRegFolder *pRegFolder = static_cast<CRegFolder*>(psf);
     const REQUIREDREGITEM* pRequired = pRegFolder->IsRequiredItem(apidl[0]);
     if (pRequired && pRequired->pszCpl)
@@ -896,17 +895,10 @@ static HRESULT CALLBACK RegFolderContextMenuCallback(IShellFolder *psf, HWND hwn
         hr = SHELL_ExecuteControlPanelCPL(hwnd, L"desk.cpl") ? S_OK : E_FAIL;
     }
 #endif
-    else if ((pCLSID = pRegFolder->IsRegItem(apidl[0])) != NULL)
+    else if (_ILIsDesktop(pidlFolder) && _ILIsBitBucket(apidl[0]))
     {
-        if (CLSID_MyDocuments != *pCLSID)
-        {
-            hr = SHELL32_ShowShellExtensionProperties(pCLSID, pdtobj);
-        }
-        else
-        {
-            FIXME("ROS MyDocs must implement IShellPropSheetExt\n");
-            hr = S_FALSE; // Just display the filesystem properties
-        }
+        FIXME("Use SHOpenPropSheet on Recyclers PropertySheetHandlers from the registry\n");
+        hr = SH_ShowRecycleBinProperties(L'C') ? S_OK : E_FAIL;
     }
     else
     {

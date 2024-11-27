@@ -750,13 +750,12 @@ CDrvDefExt::AddPages(LPFNADDPROPSHEETPAGE pfnAddPage, LPARAM lParam)
 {
     HPROPSHEETPAGE hPage;
 
-    hPage = SH_CreatePropertySheetPageEx(IDD_DRIVE_PROPERTIES, GeneralPageProc, (LPARAM)this,
-                                         NULL, &PropSheetPageLifetimeCallback<CDrvDefExt>);
-    HRESULT hr = AddPropSheetPage(hPage, pfnAddPage, lParam);
-    if (FAILED_UNEXPECTEDLY(hr))
-        return hr;
-    else
-        AddRef(); // For PropSheetPageLifetimeCallback
+    hPage = SH_CreatePropertySheetPage(IDD_DRIVE_PROPERTIES,
+                                       GeneralPageProc,
+                                       (LPARAM)this,
+                                       NULL);
+    if (hPage)
+        pfnAddPage(hPage, lParam);
 
     if (GetDriveTypeW(m_wszDrive) == DRIVE_FIXED)
     {
