@@ -61,9 +61,9 @@ endif()
 if(DEFINED ENV{GITHUB_ACTIONS} AND ENV{GITHUB_ACTIONS})
     file(APPEND ${BUILDER_INFO_FILE} "Built by: GitHub Actions Runner\n")
 elseif(UNIX)
-    file(APPEND ${BUILDER_INFO_FILE} "Built by: ${CURRENT_USER}'s Machine (Linux)\n")
+    file(APPEND ${BUILDER_INFO_FILE} "Built by: Manual Compile (Linux)\n")
 else()
-    file(APPEND ${BUILDER_INFO_FILE} "Built by: ${CURRENT_USER}'s Machine (Windows)\n")
+    file(APPEND ${BUILDER_INFO_FILE} "Built by: Manual Compile (Windows)\n")
 endif()
 
 # Add the builder info file to the install package or build artifacts
