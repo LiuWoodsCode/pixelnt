@@ -68,5 +68,32 @@ if((EXISTS "${REACTOS_SOURCE_DIR}/.git") AND (NOT NO_REACTOS_BUILDNO))
     endif()
 endif()
 
+# Get build computer name and builder username
+if(NOT NO_REACTOS_BUILDNO)
+    execute_process(
+        COMMAND hostname
+        OUTPUT_VARIABLE BUILD_COMPUTER_NAME
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    set(BUILD_COMPUTER_NAME "${BUILD_COMPUTER_NAME}")
+
+    execute_process(
+        COMMAND ${CMAKE_COMMAND} -E environment
+        OUTPUT_VARIABLE ENV_VARS
+    )
+    string(REGEX MATCH "USERNAME=([^\n\r]*)" _ ${ENV_VARS})
+    if(_ MATCHES "USERNAME=(.*)")
+        set(BUILDER_USERNAME "${CMAKE_MATCH_1}")
+    else()
+        # Fallback for systems without USERNAME variable (e.g., Unix)
+        execute_process(
+            COMMAND whoami
+            OUTPUT_VARIABLE BUILDER_USERNAME
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+    endif()
+endif()
+
+# Configure header files
 configure_file(sdk/include/reactos/version.h.cmake ${REACTOS_BINARY_DIR}/sdk/include/reactos/version.h)
 configure_file(sdk/include/reactos/buildno.h.cmake ${REACTOS_BINARY_DIR}/sdk/include/reactos/buildno.h)
