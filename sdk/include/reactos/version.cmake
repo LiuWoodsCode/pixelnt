@@ -29,6 +29,7 @@ endif()
 # Get Git revision through "git describe"
 set(COMMIT_HASH "unknown-hash")
 set(REVISION "unknown-revision")
+set(GIT_BRANCH "unknown-branch")
 
 if((EXISTS "${REACTOS_SOURCE_DIR}/.git") AND (NOT NO_REACTOS_BUILDNO))
     find_package(Git)
@@ -54,7 +55,23 @@ if((EXISTS "${REACTOS_SOURCE_DIR}/.git") AND (NOT NO_REACTOS_BUILDNO))
         if(GIT_CALL_RESULT EQUAL 0)
             set(REVISION "${GIT_DESCRIBE_REVISION}")
         endif()
+
+        execute_process(
+            COMMAND "${GIT_EXECUTABLE}" rev-parse --abbrev-ref HEAD
+            WORKING_DIRECTORY ${REACTOS_SOURCE_DIR}
+            OUTPUT_VARIABLE GIT_BRANCH_NAME
+            RESULT_VARIABLE GIT_CALL_RESULT
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        if(GIT_CALL_RESULT EQUAL 0)
+            set(GIT_BRANCH "${GIT_BRANCH_NAME}")
+        endif()
     endif()
+endif()
+
+# Append branch to revision if available
+if(NOT GIT_BRANCH STREQUAL "unknown-branch")
+    set(REVISION "${REVISION}-${GIT_BRANCH}")
 endif()
 
 configure_file(sdk/include/reactos/version.h.cmake ${REACTOS_BINARY_DIR}/sdk/include/reactos/version.h)
