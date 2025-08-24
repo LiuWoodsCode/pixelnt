@@ -396,7 +396,7 @@ GetSystemVersionString(OUT PWSTR pwszzVersion,
         /* String for Safe Mode */
         Status = RtlStringCchPrintfW(pwszzVersion,
                                      cchDest,
-                                     L"PixelNT Version %S %wZ (NT %u.%u Build %u%s)\n",
+                                     L"ReactOS Version %S %wZ (NT %u.%u Build %u%s)\n",
                                      KERNEL_VERSION_STR,
                                      &BuildLabString,
                                      SharedUserData->NtMajorVersion,
@@ -436,12 +436,9 @@ GetSystemVersionString(OUT PWSTR pwszzVersion,
         /* Multi-string for Normal Mode */
         Status = RtlStringCchPrintfW(pwszzVersion,
                                      cchDest,
-                                     L"PixelNT% Version %S\n"
+                                     L"ReactOS Version %S\n"
                                      L"Build %wZ\n"
                                      L"Reporting NT %u.%u (Build %u%s)\n",
-                                     L" \n",
-                                     L"This OS is a work in progress.\n",
-                                     L"Report bugs at https://github.com/LiuWoodsCode/PixelNT/issues\n",
                                      KERNEL_VERSION_STR,
                                      &BuildLabString,
                                      SharedUserData->NtMajorVersion,
@@ -472,7 +469,7 @@ GetSystemVersionString(OUT PWSTR pwszzVersion,
         /* Fall-back string */
         Status = RtlStringCchPrintfW(pwszzVersion,
                                      cchDest,
-                                     L"PixelNT Version %S %wZ\n",
+                                     L"ReactOS Version %S %wZ\n",
                                      KERNEL_VERSION_STR,
                                      &BuildLabString);
         if (!NT_SUCCESS(Status))
