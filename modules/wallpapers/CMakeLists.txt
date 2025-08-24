@@ -4,3 +4,5 @@ add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt DESTINATION reactos/Web
 add_subdirectory(Angelus)
 add_subdirectory(Mizu)
 add_subdirectory(Other)
+add_subdirectory(Original)
+add_subdirectory(Web)
