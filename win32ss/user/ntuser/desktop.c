@@ -439,9 +439,9 @@ GetSystemVersionString(OUT PWSTR pwszzVersion,
                                      L"PixelNT% Version %S\n"
                                      L"Build %wZ\n"
                                      L"Reporting NT %u.%u (Build %u%s)\n",
-                                     L" ",
-                                     L"This OS is a work in progress.",
-                                     L"Report bugs at https://github.com/LiuWoodsCode/PixelNT/issues",
+                                     L" \n",
+                                     L"This OS is a work in progress.\n",
+                                     L"Report bugs at https://github.com/LiuWoodsCode/PixelNT/issues\n",
                                      KERNEL_VERSION_STR,
                                      &BuildLabString,
                                      SharedUserData->NtMajorVersion,
