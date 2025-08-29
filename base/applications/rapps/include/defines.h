@@ -37,7 +37,7 @@
 #define RAPPS_DATABASE_SUBDIR       L"appdb"
 
 /* URL and filename of the online RAPPS database */
-#define APPLICATION_DATABASE_URL    L"https://rapps.reactos.org/rappmgr2.cab"
+#define APPLICATION_DATABASE_URL    L"http://10.0.2.2/rappmgr2.cab"
 #define APPLICATION_DATABASE_NAME   L"rappmgr2.cab"
 
 #define MAX_STR_LEN 256
